@@ -1,0 +1,1454 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Augmented Human Lab — internal pre-submission reviewer for ACM CHI 2027 papers.">
+<meta name="theme-color" content="#6100FF">
+<title>CHI 2027 Review Desk — AHL</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%236100FF'/%3E%3Ctext x='16' y='22' font-family='system-ui,sans-serif' font-size='17' font-weight='800' fill='white' text-anchor='middle'%3EC%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- AHL brand typeface (Neue Haas Grotesk, Adobe Fonts) + the desk's editorial serif/mono -->
+<link rel="stylesheet" href="https://use.typekit.net/zws2qzx.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --ground:#eef1f5;
+  --surface:#ffffff;
+  --surface-2:#f6f8fa;
+  --ink:#141d26;
+  --ink-2:#3d4c5a;
+  --ink-3:#6c7d8c;
+  --rule:#d3dbe4;
+  --rule-2:#e6ebf1;
+  --accent:#6100FF;
+  --accent-soft:#efe7ff;
+  --accent-grad:linear-gradient(221deg,#00D7EE 0%,#6100FF 100%);
+  --p0:#a81f16; --p0-soft:#fae7e5;
+  --p1:#8a5a06; --p1-soft:#fbf0dc;
+  --p2:#6100FF; --p2-soft:#efe7ff;
+  --p3:#5b6b79; --p3-soft:#eaeef2;
+  --pass:#1a6a4c; --pass-soft:#dff0e8;
+  --shadow:0 1px 2px rgba(20,29,38,.06), 0 8px 24px -14px rgba(20,29,38,.28);
+  --btn-fg:#ffffff;
+  --radius:10px;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --sans:"neue-haas-grotesk-text","IBM Plex Sans",system-ui,-apple-system,Segoe UI,sans-serif;
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0e141a;
+    --surface:#161e26;
+    --surface-2:#1c262f;
+    --ink:#e6edf3;
+    --ink-2:#b3c0cc;
+    --ink-3:#8496a5;
+    --rule:#2b3742;
+    --rule-2:#222d36;
+    --accent:#b79bff;
+    --accent-soft:#241a3a;
+    --accent-grad:linear-gradient(221deg,#00D7EE 0%,#6100FF 100%);
+    --p0:#f19a92; --p0-soft:#3a1f1c;
+    --p1:#e0b872; --p1-soft:#33291a;
+    --p2:#b79bff; --p2-soft:#241a3a;
+    --p3:#9fb0bd; --p3-soft:#232d36;
+    --pass:#7cc9a6; --pass-soft:#16302a;
+    --btn-fg:#0e141a;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -14px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0e141a;
+  --surface:#161e26;
+  --surface-2:#1c262f;
+  --ink:#e6edf3;
+  --ink-2:#b3c0cc;
+  --ink-3:#8496a5;
+  --rule:#2b3742;
+  --rule-2:#222d36;
+  --accent:#b79bff;
+  --accent-soft:#241a3a;
+  --accent-grad:linear-gradient(221deg,#00D7EE 0%,#6100FF 100%);
+  --p0:#f19a92; --p0-soft:#3a1f1c;
+  --p1:#e0b872; --p1-soft:#33291a;
+  --p2:#b79bff; --p2-soft:#241a3a;
+  --p3:#9fb0bd; --p3-soft:#232d36;
+  --pass:#7cc9a6; --pass-soft:#16302a;
+  --btn-fg:#0e141a;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -14px rgba(0,0,0,.8);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--ground);color:var(--ink);
+  font-family:var(--sans);font-size:15px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{margin:0;text-wrap:balance;font-family:var(--serif);font-weight:600;letter-spacing:-.01em}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:500;
+}
+
+/* ---------- top bar ---------- */
+.topbar{
+  position:sticky;top:0;z-index:30;background:var(--surface);
+  border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;gap:18px;padding:12px 22px;flex-wrap:wrap;
+}
+.brand{display:flex;align-items:baseline;gap:10px;margin-right:auto}
+.brand h1{font-size:19px}
+.brand .sub{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.04em}
+.chip{
+  font-family:var(--mono);font-size:11px;letter-spacing:.04em;
+  padding:4px 9px;border-radius:999px;border:1px solid var(--rule);
+  color:var(--ink-2);background:var(--surface-2);white-space:nowrap;
+}
+.chip.live{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.chip.warn{border-color:var(--p1);color:var(--p1);background:var(--p1-soft)}
+
+/* ---------- shell ---------- */
+.shell{display:grid;grid-template-columns:264px minmax(0,1fr);gap:0;align-items:start}
+.rail{
+  position:sticky;top:57px;align-self:start;min-height:calc(100vh - 57px);max-height:calc(100vh - 57px);overflow-y:auto;
+  border-right:1px solid var(--rule);background:var(--surface);
+  padding:18px 14px 40px;display:flex;flex-direction:column;gap:18px;
+}
+.stage{padding:26px 30px 90px;min-width:0;display:flex;flex-direction:column;gap:22px;max-width:1080px}
+@media (max-width:900px){
+  .shell{grid-template-columns:1fr}
+  .rail{position:static;max-height:none;border-right:0;border-bottom:1px solid var(--rule)}
+  .stage{padding:20px 16px 70px}
+}
+
+/* ---------- panels ---------- */
+.panel{
+  background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+.panel-hd{padding:15px 18px;border-bottom:1px solid var(--rule-2);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.panel-hd h2{font-size:17px}
+.panel-bd{padding:18px}
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+
+/* ---------- form ---------- */
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3)}
+.field input,.field select,.field textarea{
+  background:var(--surface-2);border:1px solid var(--rule);border-radius:7px;padding:9px 11px;width:100%;
+}
+.field .hint{font-size:12.5px;color:var(--ink-3);line-height:1.45}
+.btn{
+  background:var(--accent);color:var(--btn-fg);border:1px solid transparent;border-radius:7px;
+  padding:10px 18px;font-weight:600;cursor:pointer;letter-spacing:.01em;
+}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--rule)}
+.btn.sm{padding:6px 12px;font-size:13px;font-weight:500}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:7px;overflow:hidden}
+.seg button{background:var(--surface-2);border:0;padding:8px 14px;cursor:pointer;font-size:13.5px;color:var(--ink-2)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--btn-fg);font-weight:600}
+
+/* ---------- dropzone ---------- */
+.drop{
+  border:1.5px dashed var(--rule);border-radius:var(--radius);background:var(--surface-2);
+  padding:30px 22px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;
+}
+.drop:hover,.drop.over{border-color:var(--accent);background:var(--accent-soft)}
+.drop .big{font-family:var(--serif);font-size:19px;margin-bottom:4px}
+.drop .small{font-size:13px;color:var(--ink-3)}
+
+/* ---------- preflight ---------- */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--rule-2);border:1px solid var(--rule-2);border-radius:8px;overflow:hidden}
+.metric{background:var(--surface);padding:12px 14px;display:flex;flex-direction:column;gap:3px}
+.metric .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3)}
+.metric .v{font-family:var(--mono);font-size:20px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1.2}
+.metric .n{font-size:12px;color:var(--ink-3)}
+.metric[data-flag="fail"] .v{color:var(--p0)}
+.metric[data-flag="warn"] .v{color:var(--p1)}
+.metric[data-flag="pass"] .v{color:var(--pass)}
+
+.flags{display:flex;flex-direction:column;gap:0;margin-top:14px;border:1px solid var(--rule-2);border-radius:8px;overflow:hidden}
+.flag{display:grid;grid-template-columns:78px minmax(0,1fr);gap:12px;padding:10px 13px;border-top:1px solid var(--rule-2);align-items:start}
+.flag:first-child{border-top:0}
+.flag .st{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.06em;padding:3px 0;text-align:center;border-radius:4px}
+.st.FAIL{background:var(--p0-soft);color:var(--p0)}
+.st.WARN{background:var(--p1-soft);color:var(--p1)}
+.st.PASS{background:var(--pass-soft);color:var(--pass)}
+.st.CHECK{background:var(--p3-soft);color:var(--p3)}
+.flag .tx{font-size:13.5px;line-height:1.5}
+.flag .tx b{font-weight:600}
+.flag .tx span{color:var(--ink-3)}
+
+/* ---------- rail nav ---------- */
+.rail h3{font-size:13px;font-family:var(--mono);font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3)}
+.navlist{display:flex;flex-direction:column;gap:1px;margin-top:8px}
+.navitem{
+  display:grid;grid-template-columns:36px minmax(0,1fr);gap:8px;align-items:center;
+  padding:6px 8px;border-radius:6px;border:0;background:transparent;text-align:left;cursor:pointer;
+  font-size:13px;color:var(--ink-2);width:100%;
+}
+.navitem:hover{background:var(--surface-2)}
+.navitem[aria-current="true"]{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.navitem .num{font-family:var(--mono);font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums;white-space:nowrap}
+.navitem[data-state="running"] .num::after{content:"";}
+.navitem[data-state="done"] .num{color:var(--pass)}
+.navitem[data-state="running"]{color:var(--ink);font-weight:600}
+.navitem[data-state="error"] .num{color:var(--p0)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--rule);display:inline-block}
+
+.progress{height:4px;background:var(--rule-2);border-radius:3px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--accent);width:0;transition:width .4s ease}
+
+/* ---------- report ---------- */
+.report{display:flex;flex-direction:column;gap:20px}
+.sec{scroll-margin-top:70px}
+.sec-hd{display:flex;align-items:baseline;gap:10px;padding:0 0 8px;border-bottom:1px solid var(--rule);margin-bottom:12px}
+.sec-hd .num{font-family:var(--mono);font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.sec-hd h2{font-size:20px}
+.sec-body{font-size:14.5px;line-height:1.62;color:var(--ink)}
+.sec-body h2{font-size:18px;margin:18px 0 8px}
+.sec-body h3{font-size:16px;margin:16px 0 6px}
+.sec-body h4{font-family:var(--sans);font-size:13.5px;font-weight:700;margin:14px 0 4px;letter-spacing:0}
+.sec-body p{margin:0 0 10px;max-width:74ch}
+.sec-body ul,.sec-body ol{margin:0 0 10px;padding-left:20px;max-width:74ch}
+.sec-body li{margin:0 0 4px}
+.sec-body strong{font-weight:600}
+.sec-body code{font-family:var(--mono);font-size:.88em;background:var(--surface-2);padding:1px 5px;border-radius:4px}
+.sec-body hr{border:0;border-top:1px solid var(--rule-2);margin:18px 0}
+.sec-body blockquote{margin:0 0 10px;padding:2px 0 2px 14px;border-left:3px solid var(--rule);color:var(--ink-2)}
+.tablewrap{overflow-x:auto;margin:0 0 14px;border:1px solid var(--rule-2);border-radius:8px}
+.sec-body table{border-collapse:collapse;width:100%;font-size:13px}
+.sec-body th,.sec-body td{padding:8px 11px;text-align:left;vertical-align:top;border-top:1px solid var(--rule-2)}
+.sec-body thead th{
+  background:var(--surface-2);border-top:0;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:600;white-space:nowrap;
+}
+.sec-body tbody tr:hover{background:var(--surface-2)}
+.streaming{white-space:pre-wrap;font-size:13.5px;color:var(--ink-2);font-family:var(--sans)}
+.thinking{display:inline-flex;align-items:center;gap:8px;color:var(--ink-3);font-size:13.5px;font-style:italic}
+.thinking i{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
+@media (prefers-reduced-motion:reduce){.thinking i{animation:none;opacity:.7}.progress i{transition:none}}
+
+/* severity words picked out inside generated tables */
+.sev{font-family:var(--mono);font-size:11px;font-weight:600;padding:2px 6px;border-radius:4px;letter-spacing:.04em;white-space:nowrap}
+.sev.P0{background:var(--p0-soft);color:var(--p0)}
+.sev.P1{background:var(--p1-soft);color:var(--p1)}
+.sev.P2{background:var(--p2-soft);color:var(--p2)}
+.sev.P3{background:var(--p3-soft);color:var(--p3)}
+.sev.FAIL{background:var(--p0-soft);color:var(--p0)}
+.sev.WARNING{background:var(--p1-soft);color:var(--p1)}
+.sev.PASS{background:var(--pass-soft);color:var(--pass)}
+
+/* ---------- keywords ---------- */
+.kwgroup{margin-bottom:16px}
+.kwgroup .kh{display:flex;align-items:baseline;gap:10px;margin-bottom:8px}
+.kwgroup .kh .rule{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.kwlist{display:flex;flex-direction:column;gap:8px}
+.kw{border:1px solid var(--rule-2);border-left:3px solid var(--accent);border-radius:7px;padding:9px 12px;background:var(--surface-2)}
+.kw .n{font-weight:600;font-size:14px}
+.kw .w{font-size:13px;color:var(--ink-2);margin-top:2px}
+.kw.unverified{border-left-color:var(--p1)}
+.kw .badge{font-family:var(--mono);font-size:10px;color:var(--p1);margin-left:6px}
+
+/* ---------- misc ---------- */
+.note{font-size:13px;color:var(--ink-3);line-height:1.5}
+.err{background:var(--p0-soft);color:var(--p0);border:1px solid var(--p0);border-radius:7px;padding:10px 13px;font-size:13.5px}
+.reflist{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:13px;align-items:baseline}
+.reflist dt{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);white-space:nowrap;font-variant-numeric:tabular-nums}
+.reflist dd{margin:0}
+details.raw{margin-top:10px}
+details.raw summary{cursor:pointer;font-size:12.5px;color:var(--ink-3);font-family:var(--mono)}
+details.raw pre{white-space:pre-wrap;font-size:12px;background:var(--surface-2);padding:12px;border-radius:7px;overflow-x:auto}
+[hidden]{display:none !important}
+</style>
+
+</head>
+<body>
+
+<!-- ==== Backend origin ====
+     Production points at the shared-key Cloudflare Worker (its custom domain on
+     sankhacooray.com). Leave as "." to talk to a same-origin backend in local dev
+     (e.g. the Node server in ../chi-review-desk-server on http://localhost:8787). -->
+<script>window.API_BASE = "https://chi-review-api.sankhacooray.com";</script>
+
+<!-- ==== AHL sign-in gate (shared broker ahl-site-appscript) ==== -->
+<style>
+  #authGate{position:fixed;inset:0;z-index:90000;display:flex;align-items:center;justify-content:center;padding:1.5rem;
+    background:radial-gradient(120% 120% at 100% 0%, rgba(0,215,238,.14), transparent 55%), linear-gradient(135deg,#6100FF 0%,#4400B3 100%);
+    padding-top:max(1.5rem,env(safe-area-inset-top));padding-bottom:max(1.5rem,env(safe-area-inset-bottom));}
+  body.ahl-authed #authGate{display:none}
+  #authGate .gate-card{width:100%;max-width:25rem;background:var(--surface);border-radius:20px;padding:2.4rem 2rem;text-align:center;
+    box-shadow:0 1px 3px rgba(0,0,0,.10),0 18px 50px rgba(0,0,0,.30)}
+  #authGate .gate-icon{width:4.5rem;height:4.5rem;margin:0 auto 1.3rem;border-radius:18px;background:var(--accent-grad);
+    color:#fff;font-family:var(--serif);font-size:2rem;font-weight:600;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(97,0,255,.32)}
+  #authGate h1{font-family:var(--serif);font-size:1.4rem;font-weight:600;color:var(--ink);margin:0 0 .5rem}
+  #authGate p{font-size:.95rem;color:var(--ink-3);line-height:1.55;margin:0 0 1.5rem}
+  #authGate p b{color:var(--ink);font-weight:600}
+  #authGate .gate-signin{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;width:100%;padding:.85rem 1.2rem;
+    border:0;border-radius:999px;cursor:pointer;font:inherit;font-size:.98rem;font-weight:600;color:#fff;background:var(--accent-grad);
+    box-shadow:0 6px 18px rgba(97,0,255,.30);transition:box-shadow .2s ease,opacity .2s ease}
+  #authGate .gate-signin:hover{box-shadow:0 8px 24px rgba(97,0,255,.42)}
+  #authGate .gate-signin[disabled]{opacity:.6;cursor:default}
+  #authGate .gate-signin svg{width:1.05rem;height:1.05rem;background:#fff;border-radius:3px;padding:1px}
+  #authGate .gate-err{display:none;margin-bottom:1.1rem;padding:.7rem .9rem;border-radius:12px;background:var(--p0-soft);
+    border:1px solid rgba(168,31,22,.25);color:var(--p0);font-size:.86rem;line-height:1.45;text-align:left}
+  #authGate.has-error .gate-err{display:block}
+  #authGate .gate-foot{margin-top:1.4rem;font-size:.78rem;color:var(--ink-3)}
+</style>
+<div id="authGate" role="dialog" aria-modal="true" aria-label="Sign in to the CHI Review Desk">
+  <div class="gate-card">
+    <div class="gate-icon">C</div>
+    <h1>CHI 2027 Review Desk</h1>
+    <p>The pre-submission reviewer is for <b>@ahlab.org</b> members. Sign in with your AHL Google account to continue.</p>
+    <div class="gate-err" id="gateErr"></div>
+    <button type="button" class="gate-signin" id="gateBtn">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      Sign in with your AHL account
+    </button>
+    <div class="gate-foot">Augmented Human Lab</div>
+  </div>
+</div>
+
+<header class="topbar">
+  <div class="brand">
+    <h1>CHI 2027 Review Desk</h1>
+    <span class="sub">internal pre-submission check</span>
+  </div>
+  <span class="chip" id="modeChip">checking runtime…</span>
+  <span class="chip warn" id="deadlineChip"></span>
+  <span class="chip" id="ahlWho" hidden></span>
+  <button class="btn ghost sm" id="themeBtn" type="button">Theme</button>
+</header>
+
+<div class="shell">
+  <aside class="rail">
+    <div>
+      <h3>Run</h3>
+      <div class="progress" style="margin:10px 0 8px"><i id="bar"></i></div>
+      <div class="note" id="runStatus">No paper loaded.</div>
+      <div class="btn-row" style="margin-top:10px">
+        <button class="btn sm" id="stopBtn" type="button" hidden>Stop</button>
+      </div>
+    </div>
+    <div>
+      <h3>Report</h3>
+      <nav class="navlist" id="nav"></nav>
+    </div>
+    <div>
+      <h3>Export</h3>
+      <div class="btn-row" style="margin-top:8px">
+        <button class="btn ghost sm" id="copyBtn" type="button" style="flex:1" disabled>Copy Markdown</button>
+        <button class="btn ghost sm" id="dlBtn" type="button" style="flex:1" disabled>Download .md</button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="stage">
+
+    <!-- ============ SETUP ============ -->
+    <section class="panel" id="setupPanel">
+      <div class="panel-hd">
+        <h2>Set up the desk</h2>
+        <span class="eyebrow" id="setupMode"></span>
+      </div>
+      <div class="panel-bd" style="display:flex;flex-direction:column;gap:16px">
+
+        <div id="keyBlock" class="grid-2">
+          <div class="field">
+            <label for="apiKey">Anthropic API key</label>
+            <input id="apiKey" type="password" placeholder="sk-ant-…" autocomplete="off" spellcheck="false">
+            <div class="hint">Your key never leaves this browser — it is sent only to <code>api.anthropic.com</code>, directly from this page. Nothing about your paper reaches whoever hosts this page. Get a key at <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">console.anthropic.com</a>.<br><label style="display:inline-flex;gap:6px;align-items:center;font-family:var(--sans);text-transform:none;letter-spacing:0;font-size:12.5px;color:var(--ink-3);margin-top:4px"><input id="rememberKey" type="checkbox" style="width:auto"> remember on this device</label></div>
+          </div>
+          <div class="field">
+            <label for="model">Model</label>
+            <select id="model">
+              <option value="claude-opus-5">Claude Opus 5 — deepest review (recommended)</option>
+              <option value="claude-sonnet-5">Claude Sonnet 5 — faster, cheaper</option>
+            </select>
+            <div class="hint">The full PDF is sent as a document, so figures, tables and page numbers are inspected directly. A full review is six or seven requests against your key; the PDF is cached between them.</div>
+          </div>
+        </div>
+
+        <div id="sampleBlock" class="note" hidden></div>
+
+        <div id="serverBlock" hidden style="display:flex;flex-direction:column;gap:12px">
+          <div class="note" id="serverNote"></div>
+          <div class="field" id="codeField" hidden style="max-width:340px">
+            <label for="accessCode">Lab access code</label>
+            <input id="accessCode" type="password" placeholder="" autocomplete="off" spellcheck="false">
+            <div class="hint">Set by whoever runs the server. It gates use of the lab&rsquo;s shared key.</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Review depth</label>
+          <div class="seg" role="group" id="depthSeg">
+            <button type="button" data-depth="full" aria-pressed="true">Full review</button>
+            <button type="button" data-depth="desk" aria-pressed="false">Desk check only</button>
+            <button type="button" data-depth="triage" aria-pressed="false">Rapid triage</button>
+          </div>
+          <div class="hint" id="depthHint">All thirteen sections: paper map, compliance audit, five-dimension rubric, claims-to-evidence matrix, method audit, reviewer objections, prioritised revision plan, and CHI 2027 keywords.</div>
+        </div>
+
+        <div class="field">
+          <label for="ctxNote">Anything the reviewer should know (optional)</label>
+          <textarea id="ctxNote" rows="2" placeholder="e.g. this is a resubmission of an RR from CHI 2026; the study is qualitative and we do not claim generalisability"></textarea>
+        </div>
+
+        <div class="drop" id="drop" tabindex="0" role="button" aria-label="Upload a PDF">
+          <div class="big" id="dropTitle">Drop the submission PDF here</div>
+          <div class="small" id="dropSub">or click to choose a file — nothing is uploaded until you press Run</div>
+          <input type="file" id="file" accept="application/pdf,.pdf" hidden>
+        </div>
+
+        <div id="setupErr" class="err" hidden></div>
+
+        <div class="btn-row">
+          <button class="btn" id="runBtn" type="button" disabled>Run review</button>
+          <button class="btn ghost" id="resetBtn" type="button" hidden>Start over</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PRE-FLIGHT ============ -->
+    <section class="panel" id="preflightPanel" hidden>
+      <div class="panel-hd">
+        <h2>Pre-flight</h2>
+        <span class="eyebrow">measured in your browser, before Claude reads a word</span>
+      </div>
+      <div class="panel-bd">
+        <div class="metrics" id="metrics"></div>
+        <div class="flags" id="flags"></div>
+        <div class="note" style="margin-top:12px">These are mechanical checks on the extracted text. They are handed to the reviewer as OBSERVED evidence; the reviewer decides what they mean.</div>
+      </div>
+    </section>
+
+    <!-- ============ REPORT ============ -->
+    <div class="report" id="report"></div>
+
+    <!-- ============ REFERENCE ============ -->
+    <section class="panel" id="refPanel">
+      <div class="panel-hd"><h2>CHI 2027 rules this desk checks against</h2></div>
+      <div class="panel-bd" style="display:flex;flex-direction:column;gap:18px">
+        <div class="grid-2">
+          <div>
+            <div class="eyebrow" style="margin-bottom:8px">Hard limits</div>
+            <dl class="reflist">
+              <dt>≤ 150</dt><dd>words in the abstract</dd>
+              <dt>5,000–8,000</dt><dd>words encouraged; under 5,000 is a short paper</dd>
+              <dt>&gt; 12,000</dt><dd>desk-rejected without strong justification</dd>
+              <dt>1-column</dt><dd>required reviewing format; wrong template may be desk-rejected</dd>
+              <dt>Anonymous</dt><dd>double-anonymous; a reference marked “anonymous” is grounds for desk rejection</dd>
+            </dl>
+          </div>
+          <div>
+            <div class="eyebrow" style="margin-bottom:8px">Key dates (AoE)</div>
+            <dl class="reflist">
+              <dt>10 Sep 2026</dt><dd>paper submission deadline</dd>
+              <dt>late Oct 2026</dt><dd>desk-reject outcomes</dd>
+              <dt>5 Nov 2026</dt><dd>reviews released</dd>
+              <dt>3 Dec 2026</dt><dd>resubmission (R1) deadline</dd>
+              <dt>17 Dec 2026</dt><dd>final notification</dd>
+            </dl>
+          </div>
+        </div>
+        <div>
+          <div class="eyebrow" style="margin-bottom:8px">Recommendation scale used by the reviewer</div>
+          <div class="note">
+            <b>A</b> accept with minor revisions · <b>ARR</b> between A and RR · <b>RR</b> revise and resubmit ·
+            <b>RRX</b> between RR and reject · <b>X</b> reject. Papers are scored on originality, correctness,
+            novelty, importance and clarity of exposition. Roughly 75% of submissions are rejected.
+          </div>
+        </div>
+        <div class="note">
+          Sources: <a href="https://chi2027.acm.org/authors/papers/" target="_blank" rel="noopener">CHI 2027 Papers</a> ·
+          <a href="https://chi2027.acm.org/authors/papers/papers-review-process/" target="_blank" rel="noopener">Review Process</a> ·
+          <a href="https://chi2027.acm.org/chi-anonymization-policy/" target="_blank" rel="noopener">Anonymization Policy</a> ·
+          <a href="https://chi2027.acm.org/contributions-to-chi/" target="_blank" rel="noopener">Contributions to CHI</a> ·
+          <a href="https://sigchi.org/resources/guides-for-authors/accessibility/" target="_blank" rel="noopener">SIGCHI Accessibility Guide</a> ·
+          keyword list from <a href="https://hcitang.github.io/apps/chi2027-keyword-finder/" target="_blank" rel="noopener">Tang’s CHI 2027 Keyword Finder</a>.
+          This is an internal aid, not a prediction of the outcome.
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+<script src="prompts.js"></script>
+<script>
+/* =====================================================================
+   CHI 2027 Review Desk
+   Runs in two places from one file:
+     · published Artifact  -> asks Claude through window.claude sample()
+     · saved .html on disk -> calls api.anthropic.com with your own key
+   ===================================================================== */
+
+const { KEYWORD_TSV, KEYWORDS, CONTRIBUTION_TYPES, CORE, CHI_FACTS, STAGE, TRIAGE_NOTE, DESK_NOTE } = window.PROMPTS;
+
+/* ---------------------------------------------------------------- state */
+const S = {
+  runtime: "standalone",     // "artifact" | "standalone"
+  sample: null,
+  downloads: null,
+  depth: "full",
+  file: null,
+  pdfBytes: null,
+  pages: [],
+  text: "",
+  metrics: null,
+  flags: [],
+  digest: "",
+  sections: {},              // id -> markdown
+  running: false,
+  abort: null,
+  accessCode: "",
+  paperId: null,
+  serverCfg: null
+};
+
+const $ = s => document.querySelector(s);
+const el = (t, c, h) => { const n = document.createElement(t); if (c) n.className = c; if (h != null) n.innerHTML = h; return n; };
+
+/* ---------------------------------------------------------------- theme */
+(function theme(){
+  const btn = $("#themeBtn");
+  const order = ["system","light","dark"];
+  let i = 0;
+  try { i = Math.max(0, order.indexOf(localStorage.getItem("chi-theme") || "system")); } catch(e){}
+  const apply = () => {
+    const v = order[i];
+    if (v === "system") document.documentElement.removeAttribute("data-theme");
+    else document.documentElement.setAttribute("data-theme", v);
+    btn.textContent = v === "system" ? "Theme: auto" : v === "light" ? "Theme: light" : "Theme: dark";
+    try { localStorage.setItem("chi-theme", v); } catch(e){}
+  };
+  apply();
+  btn.onclick = () => { i = (i + 1) % order.length; apply(); };
+})();
+
+/* ------------------------------------------------------------- deadline */
+(function deadline(){
+  const d = new Date(Date.UTC(2026, 8, 10, 12, 0, 0));      // 10 Sep 2026, AoE-ish
+  const days = Math.ceil((d - Date.now()) / 86400000);
+  const c = $("#deadlineChip");
+  if (days > 0) c.textContent = `${days} day${days === 1 ? "" : "s"} to the 10 Sep 2026 deadline`;
+  else { c.textContent = "CHI 2027 submission deadline has passed"; c.classList.remove("warn"); }
+})();
+
+/* ============================ SECTION PLAN ============================ */
+const PLAN = [
+  { id:"verdict",  num:"1",     title:"Executive verdict",              pass:"verdict",  order:6, depths:["full","triage","desk"] },
+  { id:"map",      num:"2",     title:"Paper map",                      pass:"map",      order:1, depths:["full","triage"] },
+  { id:"compliance",num:"3",    title:"Desk-reject & compliance audit",  pass:"compliance",order:2, depths:["full","triage","desk"] },
+  { id:"rubric",   num:"4–5",   title:"Five-dimension rubric & contribution type", pass:"rubric", order:3, depths:["full"] },
+  { id:"evidence", num:"6–8",   title:"Claims, method & reviewer objections", pass:"evidence", order:4, depths:["full","triage"] },
+  { id:"plan",     num:"9–13",  title:"Revision plan & section diagnosis", pass:"plan",   order:5, depths:["full"] },
+  { id:"keywords", num:"KW",    title:"CHI 2027 keywords",              pass:"keywords", order:7, depths:["full","triage","desk"] }
+];
+const activePlan = () => PLAN.filter(p => p.depths.includes(S.depth));
+
+/* ============================ PROMPT PARTS ============================ */
+
+
+
+/* ============================ PDF INGEST ============================ */
+
+if (window.pdfjsLib) {
+  try { pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"; } catch(e){}
+}
+
+async function readPdf(file){
+  const buf = await file.arrayBuffer();
+  S.pdfBytes = new Uint8Array(buf);
+  const doc = await pdfjsLib.getDocument({ data: S.pdfBytes.slice() }).promise;
+  const meta = await doc.getMetadata().catch(() => ({ info:{} }));
+  const pages = [];
+  const colVotes = [];
+
+  for (let p = 1; p <= doc.numPages; p++){
+    const page = await doc.getPage(p);
+    const tc = await page.getTextContent();
+    const vp = page.getViewport({ scale: 1 });
+    let out = "";
+    let lastY = null, lastX = null;
+    const starts = [];
+    for (const it of tc.items){
+      const x = it.transform[4], y = it.transform[5];
+      if (lastY === null || Math.abs(y - lastY) > 3){
+        out += "\n";
+        starts.push(x);
+      } else if (lastX !== null && x - lastX > 6){
+        out += " ";
+      }
+      out += it.str;
+      lastY = y; lastX = x + (it.width || 0);
+    }
+    // column heuristic: are line starts clustered on the left AND near mid-page?
+    const mid = vp.width / 2;
+    const left = starts.filter(x => x < mid * 0.7).length;
+    const right = starts.filter(x => x > mid * 0.95 && x < vp.width * 0.9).length;
+    if (starts.length > 12) colVotes.push(right > 0.35 * left && right > 6 ? 2 : 1);
+    pages.push(out.replace(/[ \t]+/g, " ").replace(/\n{3,}/g, "\n\n").trim());
+  }
+
+  S.pages = pages;
+  S.text = pages.map((t, i) => `\n\n[[PAGE ${i + 1}]]\n${t}`).join("");
+  S.metrics = analyse(pages, meta.info || {}, doc.numPages, colVotes);
+  S.flags = buildFlags(S.metrics);
+  return S.metrics;
+}
+
+const WORDS = s => (s.match(/[A-Za-z0-9][A-Za-z0-9'’\-]*/g) || []).length;
+
+function analyse(pages, info, numPages, colVotes){
+  const full = pages.join("\n\n");
+  const lower = full.toLowerCase();
+
+  // reference section boundary — last occurrence of a references heading
+  let refIdx = -1;
+  const refRe = /\n\s*(?:\d+\s+)?(references|bibliography|references cited)\s*\n/gi;
+  let m; while ((m = refRe.exec(full)) !== null) refIdx = m.index;
+  const body = refIdx > full.length * 0.3 ? full.slice(0, refIdx) : full;
+  const refs = refIdx > 0 ? full.slice(refIdx) : "";
+
+  // abstract
+  let abstract = "", absWords = null;
+  const aM = full.match(/\n\s*(?:\d+\s+)?abstract\s*\n([\s\S]{40,3000}?)(?=\n\s*(?:CCS CONCEPTS|CCS Concepts|KEYWORDS|Keywords|ACM Reference|1[\s.]+INTRODUCTION|1[\s.]+Introduction|INTRODUCTION\n|Introduction\n))/i);
+  if (aM) { abstract = aM[1].trim(); absWords = WORDS(abstract); }
+
+  // captions + cross references
+  const figCaps = (full.match(/\n\s*(?:Figure|Fig\.)\s*\d+[:.\s]/gi) || []).length;
+  const tabCaps = (full.match(/\n\s*Table\s*\d+[:.\s]/gi) || []).length;
+  const figNums = new Set((full.match(/(?:Figure|Fig\.)\s*(\d+)/gi) || []).map(s => s.replace(/\D+/g, "")));
+  const tabNums = new Set((full.match(/Table\s*(\d+)/gi) || []).map(s => s.replace(/\D+/g, "")));
+
+  // reference entries + in-text citation markers
+  const refEntries = (refs.match(/\n\s*\[\d+\]/g) || []).length ||
+                     (refs.match(/\n\s*\d{1,3}\.\s+[A-Z]/g) || []).length;
+  const numCites = new Set(); (body.match(/\[(\d{1,3})(?:\s*[,–-]\s*\d{1,3})*\]/g) || []).forEach(t => {
+    (t.match(/\d{1,3}/g) || []).forEach(n => numCites.add(+n));
+  });
+  const authorYear = (body.match(/\([A-Z][A-Za-z’'\-]+(?:\s+(?:et al\.|and|&)[^)]{0,30})?,?\s*(?:19|20)\d\d[a-z]?\)/g) || []).length;
+
+  const emails = [...new Set((full.match(/[\w.+\-]+@[\w\-]+\.[\w.\-]+/g) || []))];
+  const orcid = (full.match(/orcid\.org\/[\d\-Xx]+/gi) || []).length;
+  const urls = [...new Set((full.match(/https?:\/\/[^\s)\]}>,]+/gi) || []))];
+  const riskyUrls = urls.filter(u => /github\.com|gitlab\.|osf\.io|figshare|zenodo|drive\.google|dropbox|youtu|vimeo|sites\.google|\.edu|\.ac\./i.test(u));
+
+  const placeholders = [];
+  [/\bTODO\b/gi, /\bTBD\b/gi, /\bFIXME\b/gi, /\bXXX\b/g, /\bLorem ipsum\b/gi, /\?\?/g, /\[\?\]/g, /\\cite\{/g, /\\ref\{/g, /\bCITATION NEEDED\b/gi]
+    .forEach(re => { const c = (full.match(re) || []).length; if (c) placeholders.push(`${re.source.replace(/\\b|\\/g,"")} ×${c}`); });
+
+  const anonRefs = (refs.match(/\banonym(ous|ised|ized)\b/gi) || []).length;
+  const firstPerson = (body.match(/\bour (?:previous|prior|earlier) (?:work|study|paper|system)\b/gi) || []).length +
+                      (body.match(/\bwe (?:previously|earlier) (?:reported|showed|presented|published)\b/gi) || []).length +
+                      (body.match(/\bin our (?:previous|prior|earlier) (?:work|paper)\b/gi) || []).length;
+
+  const ackIdx = /\n\s*(?:\d+\s+)?acknowledge?ment/i.test(full);
+  const funding = /\b(grant no|grant number|funded by|supported by (?:the )?(?:national|nsf|nih|erc|jsps|epsrc|dfg|nrf|a\*star)|award (?:no|number))\b/i.test(full);
+  const irb = /\b(irb|institutional review board|ethics (?:committee|board|approval)|research ethics)\b/i.test(full);
+  const consent = /\binformed consent\b|\bconsent (?:was|were) obtained\b|\bparticipants consented\b/i.test(full);
+  const compensation = /\bcompensat|\breimburs|\bhonorari|\bpaid (?:\$|£|€|us\$)|\bgift card\b|\bvoucher\b/i.test(full);
+  const positionality = /\bpositionalit|\breflexivit|\bfirst author (?:is|has)\b|\bauthor team\b/i.test(full);
+  const limitations = /\n\s*(?:\d+(?:\.\d+)?\s+)?limitations?\b/i.test(full) || /\blimitations of (?:this|our) (?:work|study)\b/i.test(full);
+  const altText = /\\Description\{/.test(full);
+
+  const twoCol = colVotes.length ? (colVotes.filter(v => v === 2).length / colVotes.length) : 0;
+
+  const bodyWords = WORDS(body.replace(/\n\s*(?:Figure|Fig\.|Table)\s*\d+[\s\S]{0,400}?(?=\n\n)/gi, " "));
+
+  return {
+    pages: numPages,
+    bytes: S.pdfBytes.length,
+    totalWords: WORDS(full),
+    bodyWords,
+    refWords: WORDS(refs),
+    absWords, abstract,
+    figCaps, tabCaps, figNums: figNums.size, tabNums: tabNums.size,
+    refEntries, numCites: numCites.size, maxCite: numCites.size ? Math.max(...numCites) : 0, authorYear,
+    emails, orcid, urls: urls.length, riskyUrls,
+    placeholders, anonRefs, firstPerson,
+    ackIdx, funding, irb, consent, compensation, positionality, limitations, altText,
+    twoCol,
+    meta: {
+      Title: info.Title || "", Author: info.Author || "", Subject: info.Subject || "",
+      Keywords: info.Keywords || "", Creator: info.Creator || "", Producer: info.Producer || ""
+    },
+    extractable: WORDS(full) > 300
+  };
+}
+
+function buildFlags(m){
+  const F = [];
+  const add = (st, label, detail) => F.push({ st, label, detail });
+
+  if (!m.extractable) add("FAIL","Text layer","Almost no selectable text was extracted. This is likely a scanned or image-only PDF — reviewers and accessibility tools cannot read it.");
+
+  if (m.absWords == null) add("CHECK","Abstract","Could not locate an abstract heading in the extracted text. Check the 150-word limit by hand.");
+  else if (m.absWords > 150) add("FAIL","Abstract length",`${m.absWords} words — over the hard 150-word limit.`);
+  else if (m.absWords > 140) add("WARN","Abstract length",`${m.absWords} words — close to the 150-word limit; check after any edit.`);
+  else add("PASS","Abstract length",`${m.absWords} words, within the 150-word limit.`);
+
+  if (m.bodyWords > 12000) add("FAIL","Length",`~${m.bodyWords.toLocaleString()} words before references — above 12,000, which is desk-rejected without a strong justification.`);
+  else if (m.bodyWords > 8000) add("WARN","Length",`~${m.bodyWords.toLocaleString()} words before references — above the encouraged 8,000. Reviewers weigh contribution against length.`);
+  else if (m.bodyWords < 5000) add("CHECK","Length",`~${m.bodyWords.toLocaleString()} words before references — treated as a short paper. Reviewed identically, but the contribution must fit the length.`);
+  else add("PASS","Length",`~${m.bodyWords.toLocaleString()} words before references — inside the encouraged 5,000–8,000 band.`);
+
+  if (m.twoCol > 0.5) add("FAIL","Reviewing format",`${Math.round(m.twoCol*100)}% of pages look two-column. CHI 2027 requires a single-column PDF for review; the wrong template may be desk-rejected.`);
+  else add("PASS","Reviewing format","Pages look single-column, as the reviewing format requires.");
+
+  const metaHits = Object.entries(m.meta).filter(([k,v]) => v && /Author|Title|Subject|Keywords/.test(k) && v.length > 1);
+  if (m.meta.Author) add("FAIL","PDF metadata",`The document Author field reads “${m.meta.Author}”. Clear identifying metadata before submitting.`);
+  else if (metaHits.length) add("CHECK","PDF metadata",`Metadata present: ${metaHits.map(([k,v]) => `${k}="${v.slice(0,60)}"`).join(", ")}. Check none of it identifies you.`);
+  else add("PASS","PDF metadata","No identifying author metadata found in the document properties.");
+
+  if (m.emails.length) add("FAIL","Anonymisation",`${m.emails.length} email address${m.emails.length>1?"es":""} in the text: ${m.emails.slice(0,3).join(", ")}${m.emails.length>3?"…":""}`);
+  else if (m.orcid) add("FAIL","Anonymisation",`${m.orcid} ORCID identifier${m.orcid>1?"s":""} in the text.`);
+  else add("PASS","Anonymisation — contact details","No email addresses or ORCID identifiers found in the text.");
+
+  if (m.anonRefs) add("FAIL","Anonymous references",`${m.anonRefs} reference${m.anonRefs>1?"s":""} appear to be marked “anonymous”. This is explicit grounds for desk rejection — cite your own work normally, in the third person.`);
+
+  if (m.firstPerson) add("WARN","Self-citation phrasing",`${m.firstPerson} phrase${m.firstPerson>1?"s":""} like “our previous work”. Rewrite in the third person (“As described by Chetty et al. [10]”).`);
+
+  if (m.ackIdx || m.funding) add("CHECK","Acknowledgements / funding",`${m.ackIdx ? "An acknowledgements section" : "Funding language"} was found. Remove anything naming people, institutions or grants for the review version.`);
+
+  if (m.riskyUrls.length) add("WARN","Links",`${m.riskyUrls.length} link${m.riskyUrls.length>1?"s":""} could identify you: ${m.riskyUrls.slice(0,2).join(", ")}${m.riskyUrls.length>2?"…":""}`);
+
+  if (m.placeholders.length) add("FAIL","Placeholders",`Found ${m.placeholders.join(", ")}. Placeholder content is an explicit desk-reject ground.`);
+  else add("PASS","Placeholders","No TODO, TBD, ??, [?] or unresolved LaTeX macros found.");
+
+  if (m.refEntries && m.maxCite > m.refEntries + 1) add("WARN","Citations",`Highest in-text citation number is [${m.maxCite}] but only ~${m.refEntries} reference entries were detected. Check for a broken reference.`);
+  else if (m.refEntries) add("PASS","Citations",`~${m.refEntries} reference entries; highest in-text marker [${m.maxCite || "n/a"}].`);
+  else if (m.authorYear) add("CHECK","Citations",`Author–year style detected (~${m.authorYear} in-text citations). Reference completeness needs a manual check.`);
+
+  if (m.figCaps && !m.altText) add("CHECK","Figure descriptions",`${m.figCaps} figure caption${m.figCaps>1?"s":""} found and no \\Description{} markup detected. SIGCHI requires a text description for every figure that is more than a repeat of the caption — this cannot be confirmed from the PDF text.`);
+  else if (m.altText) add("PASS","Figure descriptions","\\Description{} markup detected in the extracted text.");
+
+  if (!m.limitations) add("WARN","Limitations","No limitations section or heading found. CHI reviewers expect claims to be calibrated by an explicit limitations discussion.");
+  else add("PASS","Limitations","A limitations section was found.");
+
+  if (!m.irb) add("CHECK","Ethics","No mention of IRB, ethics committee or research ethics approval found. If the work involves human participants, reviewers will look for it.");
+  if (m.irb && !m.consent) add("CHECK","Consent","Ethics approval is mentioned but informed consent is not. Say how consent was obtained.");
+  return F;
+}
+
+/* ============================ ENGINE ============================ */
+
+const enc = new TextEncoder();
+const bytesOf = s => enc.encode(s).length;
+const SAMPLE_BUDGET = 60000;
+
+// Backend origin: the shared-key Worker in production, "." for a same-origin dev server.
+const API_BASE = (window.API_BASE || ".").replace(/\/+$/, "");
+
+async function detectRuntime(){
+  const chip = $("#modeChip");
+
+  if (window.claude && typeof window.claude.use === "function"){
+    try { S.sample = await window.claude.use("sample"); } catch(e){ S.sample = null; }
+    try { S.downloads = await window.claude.use("downloads"); } catch(e){ S.downloads = null; }
+  }
+  if (S.sample){
+    S.runtime = "artifact";
+    chip.textContent = "runs on your Claude account";
+    chip.classList.add("live");
+    $("#keyBlock").hidden = true;
+    $("#sampleBlock").hidden = false;
+    $("#sampleBlock").innerHTML =
+      "This page asks Claude directly, on <b>your own Claude account</b> — no API key needed. " +
+      "The first request asks your permission. Because that channel takes text rather than a PDF, the desk first builds a " +
+      "structured digest of the manuscript with quoted evidence, then reviews against it. " +
+      "For the deepest reading — where Claude sees the typeset pages and figures themselves — run this page from a lab server " +
+      "or save it as an HTML file and open it from your own machine.";
+    $("#setupMode").textContent = "artifact mode";
+    refreshRun();
+    return;
+  }
+
+  // Is there a lab server behind this page holding a shared key?
+  try {
+    const r = await fetch(API_BASE + "/api/config", { headers: { accept: "application/json" } });
+    if (r.ok){
+      const cfg = await r.json();
+      if (cfg && cfg.mode === "server"){
+        S.runtime = "server";
+        S.serverCfg = cfg;
+        chip.textContent = "lab server";
+        chip.classList.add("live");
+        $("#keyBlock").hidden = true;
+        $("#serverBlock").hidden = false;
+        $("#codeField").hidden = !cfg.requiresCode;
+        $("#serverNote").innerHTML =
+          "Reviews run on the lab's shared key — you do not need one of your own. " +
+          "The paper is sent to this lab server, which forwards it to Anthropic and streams the review back; " +
+          "the key stays on the server and is never sent to your browser. Reviewing with <b>" +
+          esc(cfg.model) + "</b>." +
+          (cfg.remaining != null ? " Roughly " + cfg.remaining + " of today's " + cfg.dailyLimit + " requests left." : "");
+        $("#setupMode").textContent = "shared key";
+        try { const c = localStorage.getItem("chi-code"); if (c) $("#accessCode").value = c; } catch(e){}
+        $("#accessCode").addEventListener("input", refreshRun);
+        refreshRun();
+        return;
+      }
+    }
+  } catch(e){ /* no server here — fall through to API-key mode */ }
+
+  S.runtime = "standalone";
+  chip.textContent = "API key mode";
+  $("#setupMode").textContent = "your key, your machine";
+  try {
+    const k = localStorage.getItem("chi-key");
+    if (k){ $("#apiKey").value = k; $("#rememberKey").checked = true; }
+  } catch(e){}
+  refreshRun();
+}
+
+/* --- one request, whichever runtime we are in --- */
+async function ask({ system, user, pass, parts, maxTokens = 14000, onText, signal, tier = "complex" }){
+  if (S.runtime === "artifact"){
+    let prompt = system + "\n\n" + user;
+    if (bytesOf(prompt) > SAMPLE_BUDGET){
+      const over = bytesOf(prompt) - SAMPLE_BUDGET;
+      user = user.slice(0, Math.max(0, user.length - over - 400)) + "\n\n[context truncated to fit the request limit]";
+      prompt = system + "\n\n" + user;
+    }
+    const r = await S.sample(prompt, { onText, signal, modelTier: tier, cache: false });
+    return r.text;
+  }
+
+  // Server mode and API-key mode both consume Anthropic's SSE stream, so the
+  // parser below is shared; only the endpoint and the request body differ.
+  let url, headers, body;
+  if (S.runtime === "server"){
+    url = API_BASE + "/api/review";
+    headers = { "content-type": "application/json", "x-ahl-token": ahlToken() };
+    if (S.accessCode) headers["x-access-code"] = S.accessCode;
+    // Stateless Worker: the PDF rides along with every pass. Anthropic prompt-caches
+    // the document (cache_control: ephemeral) across the passes, so this is cheap.
+    body = { pdf: S.serverPdfB64, pass, depth: S.depth, parts: parts || {}, maxTokens };
+  } else {
+    url = "https://api.anthropic.com/v1/messages";
+    headers = {
+      "content-type": "application/json",
+      "x-api-key": $("#apiKey").value.trim(),
+      "anthropic-version": "2023-06-01",
+      "anthropic-dangerous-direct-browser-access": "true"
+    };
+    body = {
+      model: $("#model").value,
+      max_tokens: maxTokens,
+      system: [{ type: "text", text: system, cache_control: { type: "ephemeral" } }],
+      messages: [{ role: "user", content: buildUserContent(user) }],
+      stream: true
+    };
+  }
+  const res = await fetch(url, { method: "POST", signal, headers, body: JSON.stringify(body) });
+  if (!res.ok){
+    let msg = res.status + " " + res.statusText;
+    try { const j = await res.json(); if (j.error && j.error.message) msg = j.error.message; } catch(e){}
+    throw new Error(msg);
+  }
+  const reader = res.body.getReader();
+  const dec = new TextDecoder();
+  let buf = "", text = "";
+  while (true){
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf += dec.decode(value, { stream: true });
+    const lines = buf.split("\n");
+    buf = lines.pop();
+    for (const line of lines){
+      if (!line.startsWith("data:")) continue;
+      const raw = line.slice(5).trim();
+      if (!raw || raw === "[DONE]") continue;
+      let ev; try { ev = JSON.parse(raw); } catch(e){ continue; }
+      if (ev.type === "content_block_delta" && ev.delta && ev.delta.type === "text_delta"){
+        text += ev.delta.text;
+        if (onText) onText({ text, delta: ev.delta.text });
+      } else if (ev.type === "error"){
+        throw new Error((ev.error && ev.error.message) || "stream error");
+      }
+    }
+  }
+  return text;
+}
+
+/* the PDF itself rides along in API-key mode */
+let PDF_B64 = null;
+function buildUserContent(user){
+  if (PDF_B64){
+    return [
+      { type: "document", source: { type: "base64", media_type: "application/pdf", data: PDF_B64 }, cache_control: { type: "ephemeral" } },
+      { type: "text", text: user }
+    ];
+  }
+  return [{ type: "text", text: user }];
+}
+function toB64(bytes){
+  let bin = "", chunk = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunk) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+  return btoa(bin);
+}
+
+/* --- the context block every pass sees --- */
+function preflightBlock(){
+  const m = S.metrics;
+  const yn = b => b ? "yes" : "not detected";
+  return `MACHINE PRE-FLIGHT MEASUREMENTS (extracted in the browser from the submitted PDF; heuristic, treat as OBSERVED signals not verdicts):
+- Pages: ${m.pages}. Extracted words in total: ${m.totalWords.toLocaleString()}; before the references section: ~${m.bodyWords.toLocaleString()}; references section: ~${m.refWords.toLocaleString()}.
+- Abstract: ${m.absWords == null ? "heading not located in extracted text" : m.absWords + " words"}.
+- Column layout vote: ${Math.round(m.twoCol * 100)}% of pages look two-column (CHI 2027 requires single-column for review).
+- PDF metadata — Title: "${m.meta.Title}"; Author: "${m.meta.Author}"; Subject: "${m.meta.Subject}"; Creator: "${m.meta.Creator}"; Producer: "${m.meta.Producer}".
+- Email addresses in text: ${m.emails.length ? m.emails.join(", ") : "none"}. ORCID identifiers: ${m.orcid}.
+- References marked "anonymous": ${m.anonRefs}. First-person self-citation phrases ("our previous work"): ${m.firstPerson}.
+- Acknowledgements heading: ${yn(m.ackIdx)}. Funding/grant language: ${yn(m.funding)}.
+- URLs: ${m.urls} total, ${m.riskyUrls.length} potentially de-anonymising${m.riskyUrls.length ? " (" + m.riskyUrls.slice(0,4).join(", ") + ")" : ""}.
+- Placeholder patterns: ${m.placeholders.length ? m.placeholders.join(", ") : "none found"}.
+- Figure captions: ${m.figCaps}; distinct figure numbers referenced: ${m.figNums}. Table captions: ${m.tabCaps}; distinct table numbers referenced: ${m.tabNums}.
+- Reference entries detected: ${m.refEntries}; distinct numeric in-text citations: ${m.numCites} (highest [${m.maxCite}]); author–year citations: ${m.authorYear}.
+- \\Description{} alt-text markup: ${yn(m.altText)}. Limitations section: ${yn(m.limitations)}.
+- Ethics/IRB language: ${yn(m.irb)}. Informed consent: ${yn(m.consent)}. Compensation: ${yn(m.compensation)}. Positionality/reflexivity: ${yn(m.positionality)}.
+Note: the column vote, reference boundary and word counts come from PDF text extraction and can be wrong for unusual layouts. Say so where you rely on them.`;
+}
+
+function authorNote(){
+  const n = $("#ctxNote").value.trim();
+  return n ? `\n\nNOTE FROM THE AUTHORS (context they asked you to bear in mind; it does not override the evidence discipline):\n${n}` : "";
+}
+
+function manuscriptBlock(scope){
+  if (S.runtime === "server") return "";   // the server owns the prompt in this mode
+  if (S.runtime === "artifact"){
+    const d = scope === "light" ? S.digest.slice(0, 9000) + "\n\n[digest abridged for this pass]" : S.digest;
+    return `STRUCTURED DIGEST OF THE MANUSCRIPT (built by an earlier pass over the full text; page markers are the PDF's page numbers):\n\n${d}`;
+  }
+  return `The full submission PDF is attached to this message — read it directly. Page numbers you cite must be the PDF's page numbers.`;
+}
+
+function carry(limit = 5200){
+  const order = ["map","compliance","rubric","evidence","plan"];
+  let out = "";
+  for (const id of order){
+    if (!S.sections[id]) continue;
+    out += "\n\n" + S.sections[id].slice(0, Math.round(limit / 2));
+  }
+  return out.slice(0, limit * 2);
+}
+
+/* --- artifact mode only: build a digest we can afford to resend --- */
+async function buildDigest(signal, report){
+  const CH = 34000;
+  const chunks = [];
+  for (let i = 0; i < S.text.length; i += CH) chunks.push(S.text.slice(i, i + CH));
+  const parts = [];
+  for (let i = 0; i < chunks.length; i++){
+    report(`Reading the manuscript — part ${i + 1} of ${chunks.length}`);
+    const sys = `You are preparing a faithful working digest of one part of an ACM CHI submission so that a reviewer who cannot see the original can review it honestly. Quote exactly; never summarise away a number, a claim or a hedge; never add anything that is not in the text. Preserve [[PAGE n]] markers so every item can be located.`;
+    const usr = `PART ${i + 1} OF ${chunks.length} OF THE MANUSCRIPT:
+
+${chunks[i]}
+
+Write a dense digest of THIS PART ONLY, under 1,600 words, as Markdown. Include, where present in this part:
+- the section headings in order, each with its page marker;
+- the abstract verbatim if it appears here;
+- every stated research question, hypothesis, objective and contribution claim, quoted, with its page;
+- the method: design, participants (number, recruitment, compensation), materials, procedure, analysis — with the numbers as written;
+- every quantitative result as written (statistics, effect sizes, intervals, p-values), and every qualitative theme with one representative quoted excerpt;
+- every claim of effectiveness, novelty, generality or first-ness, quoted;
+- figure and table captions verbatim;
+- ethics, consent, privacy, positionality and limitations statements, quoted;
+- anything that looks like an anonymisation slip, placeholder, broken reference or unfinished passage, quoted;
+- how this part ends (mid-sentence, mid-section, or cleanly).
+No commentary, no evaluation. Facts and quotations only.`;
+    const t = await ask({ system: sys, user: usr, maxTokens: 8000, signal, tier: "default" });
+    parts.push(`### Digest of part ${i + 1}/${chunks.length}\n\n${t}`);
+  }
+  // keep the digest small enough that every later pass fits the request limit
+  const budget = 32000, per = Math.floor(budget / parts.length);
+  S.digest = parts.map(p => p.length > per ? p.slice(0, per) + "\n…[trimmed]" : p).join("\n\n");
+  return S.digest;
+}
+
+/* ============================ THE RUN ============================ */
+
+async function run(){
+  if (S.running) return;
+  S.running = true;
+  S.abort = new AbortController();
+  const signal = S.abort.signal;
+  $("#runBtn").disabled = true;
+  $("#stopBtn").hidden = false;
+  $("#setupErr").hidden = true;
+  S.sections = {};
+
+  const plan = activePlan().slice().sort((a, b) => a.order - b.order);
+  renderShell(plan);
+  let done = 0;
+  const total = plan.length + (S.runtime === "artifact" ? 1 : 0);
+  const bump = () => { $("#bar").style.width = Math.round((done / total) * 100) + "%"; };
+  const status = t => { $("#runStatus").textContent = t; };
+
+  try {
+    if (S.runtime === "standalone"){
+      const key = $("#apiKey").value.trim();
+      if (!key) throw new Error("Enter your Anthropic API key first.");
+      try { $("#rememberKey").checked ? localStorage.setItem("chi-key", key) : localStorage.removeItem("chi-key"); } catch(e){}
+      PDF_B64 = (S.metrics.pages <= 100 && S.pdfBytes.length <= 20 * 1024 * 1024) ? toB64(S.pdfBytes) : null;
+      if (!PDF_B64) status("PDF too large to attach — reviewing from extracted text.");
+    } else if (S.runtime === "server"){
+      PDF_B64 = null;
+      if (!ahlToken()) throw new Error("Your AHL sign-in has expired — reload the page and sign in again.");
+      S.accessCode = ($("#accessCode") && $("#accessCode").value.trim()) || "";
+      try { S.accessCode ? localStorage.setItem("chi-code", S.accessCode) : localStorage.removeItem("chi-code"); } catch(e){}
+      // Stateless Worker backend: no upload step — encode the PDF once and let every
+      // pass carry it (see ask()). The server enforces the size/type limits per call.
+      status("Preparing the paper…");
+      S.serverPdfB64 = toB64(S.pdfBytes);
+    } else {
+      PDF_B64 = null;
+      await buildDigest(signal, status);
+      done++; bump();
+    }
+
+    for (const step of plan){
+      if (signal.aborted) break;
+      status(`Reviewing — ${step.title.toLowerCase()}`);
+      setNavState(step.id, "running");
+      const body = document.getElementById("body-" + step.id);
+      body.innerHTML = '<span class="thinking"><i></i>Claude is reading the manuscript…</span>';
+
+      try {
+        if (step.pass === "keywords"){
+          await runKeywords(signal, body);
+        } else {
+          let sys = CORE + "\n\n" + CHI_FACTS + "\n\n" + STAGE[step.pass];
+          if (S.depth === "triage") sys += TRIAGE_NOTE;
+          if (S.depth === "desk") sys += DESK_NOTE;
+
+          let usr = manuscriptBlock(step.pass === "verdict" ? "light" : "full") + "\n\n" + preflightBlock() + authorNote();
+          if (step.pass === "verdict") usr += "\n\nFINDINGS FROM THE EARLIER PASSES OF THIS SAME REVIEW:\n" + carry();
+          else if (step.pass !== "map" && S.sections.map) usr += "\n\nPAPER MAP ESTABLISHED EARLIER IN THIS REVIEW:\n" + S.sections.map.slice(0, 4000);
+
+          const md = await ask({
+            system: sys, user: usr, signal,
+            pass: step.pass,
+            parts: {
+              preflight: preflightBlock(),
+              note: $("#ctxNote").value.trim(),
+              carry: step.pass === "verdict" ? carry() : "",
+              map: step.pass !== "map" ? (S.sections.map || "").slice(0, 4000) : ""
+            },
+            maxTokens: step.pass === "verdict" ? 6000 : 16000,
+            onText: ({ text }) => { body.innerHTML = ""; body.appendChild(el("div", "streaming", esc(text))); }
+          });
+          S.sections[step.id] = md;
+          body.innerHTML = renderMd(md);
+        }
+        setNavState(step.id, "done");
+      } catch (e){
+        if (e && (e.code === "cancelled" || e.name === "AbortError")) { setNavState(step.id, "idle"); break; }
+        const msg = errMessage(e);
+        body.innerHTML = "";
+        body.appendChild(el("div", "err", esc("This section failed: " + msg)));
+        setNavState(step.id, "error");
+      }
+      done++; bump();
+    }
+    status(signal.aborted ? "Stopped." : "Review complete.");
+    $("#copyBtn").disabled = $("#dlBtn").disabled = Object.keys(S.sections).length === 0;
+  } catch (e){
+    $("#setupErr").hidden = false;
+    $("#setupErr").textContent = errMessage(e);
+    status("Stopped.");
+  } finally {
+    S.running = false;
+    $("#stopBtn").hidden = true;
+    $("#runBtn").disabled = false;
+    $("#resetBtn").hidden = false;
+  }
+}
+
+function errMessage(e){
+  if (!e) return "Unknown error.";
+  const map = {
+    not_granted: "This page was not allowed to use Claude. Reload and allow it, or save the page and run it with an API key.",
+    rate_limited: "Claude is rate-limited right now. Wait a minute and run the remaining sections again.",
+    sampling_disabled: "Claude is not available on this account.",
+    session_expired: "Your Claude session expired — sign in again and reload.",
+    prompt_too_large: "The manuscript digest was too large for one request. Try Rapid triage, or run this in API-key mode.",
+    refused: "Claude declined to answer this request.",
+    empty_completion: "Claude returned nothing. Try running this section again.",
+    invalid_json: "Claude's keyword answer could not be parsed. Run the keyword section again.",
+    upstream_error: "A transient service error interrupted this section. Try it again.",
+    forbidden: "The lab access code was not accepted.",
+    quota: "The lab server has used up today's request budget."
+  };
+  if (e.code && map[e.code]) return map[e.code];
+  if (e.code) return e.code + (e.message ? " — " + e.message : "");
+  return e.message || String(e);
+}
+
+/* ---------------------------------------------------------- keywords */
+async function runKeywords(signal, body){
+  const list = KEYWORDS.map(k => `${k.facet} :: ${k.keyword}${k.hint ? " :: " + k.hint : ""}`).join("\n");
+  const sys = `${CORE}
+
+TASK — CHI 2027 REVIEWER DESCRIPTORS ("keywords").
+
+CHI 2027 has no topical subcommittee. Authors instead describe the expertise a reviewer needs, in four categories. Read the whole list as if it were preceded by: "a reviewer judging my work should have expertise related to…". Choose the MOST SPECIFIC descriptors that matter for understanding and evaluating this paper. Do not select every term that is loosely related to the work.
+
+You must choose ONLY from the descriptor list supplied — copy each chosen keyword string EXACTLY, character for character. Never invent a descriptor.
+
+Quotas: Domain 2–6 · Method 1–2 · Users 0–2 (only when a specific population is genuinely the focus of the work; otherwise return an empty list) · Primary contribution exactly 1, chosen from the eight official CHI contribution types.
+
+Reply with ONLY a JSON object of this shape:
+{"domain":[{"keyword":"…","why":"…"}],"method":[{"keyword":"…","why":"…"}],"users":[{"keyword":"…","why":"…"}],"primary":{"keyword":"…","why":"…"},"note":"…"}
+Each "why" is one sentence, at most 22 words, pointing at what in the paper makes that expertise necessary. "note" is one sentence on anything the authors should reconsider about their framing if the fit was poor — or an empty string.`;
+
+  const usr = `${manuscriptBlock("light")}${authorNote()}
+
+${S.sections.map ? "PAPER MAP ESTABLISHED EARLIER IN THIS REVIEW:\n" + S.sections.map.slice(0, 3000) + "\n\n" : ""}DESCRIPTOR LIST — facet :: keyword :: sample terms
+${list}
+
+THE EIGHT OFFICIAL CHI CONTRIBUTION TYPES (choose exactly one for "primary"):
+${CONTRIBUTION_TYPES.map(t => "- " + t).join("\n")}`;
+
+  let raw = "";
+  const text = await ask({
+    system: sys, user: usr, maxTokens: 3000, signal, tier: "default",
+    pass: "keywords",
+    parts: {
+      preflight: preflightBlock(),
+      note: $("#ctxNote").value.trim(),
+      map: (S.sections.map || "").slice(0, 3000)
+    },
+    onText: ({ text }) => { raw = text; body.innerHTML = '<span class="thinking"><i></i>Matching against all 161 CHI 2027 descriptors…</span>'; }
+  });
+  const data = parseJson(text || raw);
+  body.innerHTML = "";
+  body.appendChild(renderKeywords(data));
+  S.sections.keywords = keywordsToMd(data);
+}
+
+function parseJson(t){
+  if (!t) throw { code: "invalid_json", message: "empty" };
+  try { return JSON.parse(t); } catch(e){}
+  const fence = t.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (fence){ try { return JSON.parse(fence[1]); } catch(e){} }
+  const a = t.indexOf("{"), b = t.lastIndexOf("}");
+  if (a >= 0 && b > a){ try { return JSON.parse(t.slice(a, b + 1)); } catch(e){} }
+  throw { code: "invalid_json", message: "no JSON value in the reply" };
+}
+
+const KWSET = new Set(KEYWORDS.map(k => k.keyword));
+const CTSET = new Set(CONTRIBUTION_TYPES);
+
+function renderKeywords(d){
+  const wrap = el("div");
+  const groups = [
+    ["Domain", d.domain || [], "2–6", KWSET],
+    ["Method / approach", d.method || [], "1–2", KWSET],
+    ["Users, participants or communities", d.users || [], "0–2, only if a specific population is the focus", KWSET],
+    ["Primary contribution", d.primary ? [d.primary] : [], "exactly 1", CTSET]
+  ];
+  for (const [name, items, rule, valid] of groups){
+    const g = el("div", "kwgroup");
+    const h = el("div", "kh");
+    h.appendChild(el("div", "eyebrow", esc(name)));
+    h.appendChild(el("div", "rule", esc(rule)));
+    g.appendChild(h);
+    const l = el("div", "kwlist");
+    if (!items.length) l.appendChild(el("div", "note", "None selected — the reviewer judged that no descriptor in this category is central to the paper."));
+    for (const it of items){
+      if (!it || !it.keyword) continue;
+      const ok = valid.has(it.keyword);
+      const c = el("div", "kw" + (ok ? "" : " unverified"));
+      c.appendChild(el("div", "n", esc(it.keyword) + (ok ? "" : '<span class="badge">not in the official list — check by hand</span>')));
+      if (it.why) c.appendChild(el("div", "w", esc(it.why)));
+      l.appendChild(c);
+    }
+    g.appendChild(l);
+    wrap.appendChild(g);
+  }
+  if (d.note) wrap.appendChild(el("div", "note", esc(d.note)));
+  wrap.appendChild(el("div", "note", 'Paste these into the reviewer-expertise fields in PCS. Cross-check against the <a href="https://hcitang.github.io/apps/chi2027-keyword-finder/" target="_blank" rel="noopener">keyword finder</a> before you submit.'));
+  return wrap;
+}
+
+function keywordsToMd(d){
+  const line = (it, valid) => `- ${it.keyword}${valid.has(it.keyword) ? "" : "  ⚠ not in the official list"} — ${it.why || ""}`;
+  let s = "## CHI 2027 REVIEWER DESCRIPTORS\n\n**Domain (2–6)**\n" +
+    (d.domain || []).map(i => line(i, KWSET)).join("\n") +
+    "\n\n**Method / approach (1–2)**\n" + (d.method || []).map(i => line(i, KWSET)).join("\n") +
+    "\n\n**Users, participants or communities (0–2)**\n" +
+    ((d.users || []).length ? d.users.map(i => line(i, KWSET)).join("\n") : "- none — no specific population is the focus") +
+    "\n\n**Primary contribution (exactly 1)**\n" + (d.primary ? line(d.primary, CTSET) : "- not determined");
+  if (d.note) s += "\n\n" + d.note;
+  return s;
+}
+
+/* ============================ RENDERING ============================ */
+
+function esc(s){ return String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c])); }
+
+function renderMd(md){
+  let html;
+  try { html = marked.parse(md, { gfm: true, breaks: false }); }
+  catch(e){ return '<div class="streaming">' + esc(md) + "</div>"; }
+  try { html = DOMPurify.sanitize(html, { USE_PROFILES: { html: true } }); } catch(e){}
+  const box = document.createElement("div");
+  box.innerHTML = html;
+  box.querySelectorAll("table").forEach(t => {
+    const w = document.createElement("div"); w.className = "tablewrap";
+    t.parentNode.insertBefore(w, t); w.appendChild(t);
+  });
+  box.querySelectorAll("td").forEach(td => {
+    const t = td.textContent.trim();
+    if (/^(P[0-3]|FAIL|WARNING|PASS)$/.test(t)){
+      td.innerHTML = '<span class="sev ' + t + '">' + t + "</span>";
+    }
+  });
+  return box.innerHTML;
+}
+
+function renderShell(plan){
+  const R = $("#report"); R.innerHTML = "";
+  const N = $("#nav"); N.innerHTML = "";
+  const display = plan.slice().sort((a, b) => PLAN.indexOf(a) - PLAN.indexOf(b));
+  for (const p of display){
+    const s = el("section", "panel sec"); s.id = "sec-" + p.id;
+    const hd = el("div", "panel-bd");
+    const h = el("div", "sec-hd");
+    h.appendChild(el("span", "num", esc(p.num)));
+    h.appendChild(el("h2", null, esc(p.title)));
+    hd.appendChild(h);
+    const b = el("div", "sec-body"); b.id = "body-" + p.id;
+    b.innerHTML = '<span class="note">Waiting.</span>';
+    hd.appendChild(b);
+    s.appendChild(hd);
+    R.appendChild(s);
+
+    const nb = el("button", "navitem"); nb.type = "button"; nb.dataset.id = p.id; nb.dataset.state = "idle";
+    nb.appendChild(el("span", "num", esc(p.num)));
+    nb.appendChild(el("span", null, esc(p.title)));
+    nb.onclick = () => {
+      document.getElementById("sec-" + p.id).scrollIntoView({ behavior: "smooth", block: "start" });
+      N.querySelectorAll(".navitem").forEach(x => x.removeAttribute("aria-current"));
+      nb.setAttribute("aria-current", "true");
+    };
+    N.appendChild(nb);
+  }
+  $("#refPanel").hidden = true;
+}
+function setNavState(id, st){
+  const n = document.querySelector('.navitem[data-id="' + id + '"]');
+  if (n) n.dataset.state = st;
+}
+
+function renderPreflight(){
+  const m = S.metrics;
+  $("#preflightPanel").hidden = false;
+  const M = $("#metrics"); M.innerHTML = "";
+  const tile = (k, v, n, flag) => {
+    const d = el("div", "metric"); if (flag) d.dataset.flag = flag;
+    d.appendChild(el("div", "k", esc(k)));
+    d.appendChild(el("div", "v", esc(v)));
+    d.appendChild(el("div", "n", esc(n)));
+    M.appendChild(d);
+  };
+  tile("Pages", m.pages, m.twoCol > 0.5 ? "looks two-column" : "single-column", m.twoCol > 0.5 ? "fail" : "pass");
+  tile("Words before refs", m.bodyWords.toLocaleString(),
+    m.bodyWords > 12000 ? "over the 12,000 limit" : m.bodyWords > 8000 ? "above 8,000" : m.bodyWords < 5000 ? "short paper" : "5,000–8,000",
+    m.bodyWords > 12000 ? "fail" : (m.bodyWords > 8000 || m.bodyWords < 5000) ? "warn" : "pass");
+  tile("Abstract", m.absWords == null ? "—" : m.absWords, m.absWords == null ? "not located" : "limit 150",
+    m.absWords == null ? "" : m.absWords > 150 ? "fail" : m.absWords > 140 ? "warn" : "pass");
+  tile("References", m.refEntries || "—", m.maxCite ? "highest cite [" + m.maxCite + "]" : "author–year style", "");
+  tile("Figures / tables", m.figCaps + " / " + m.tabCaps, "captions detected", "");
+  const anonIssues = m.emails.length + m.orcid + m.anonRefs + (m.meta.Author ? 1 : 0);
+  tile("Anonymity flags", anonIssues, anonIssues ? "must be fixed" : "nothing found", anonIssues ? "fail" : "pass");
+
+  const F = $("#flags"); F.innerHTML = "";
+  const rank = { FAIL: 0, WARN: 1, CHECK: 2, PASS: 3 };
+  S.flags.slice().sort((a, b) => rank[a.st] - rank[b.st]).forEach(f => {
+    const r = el("div", "flag");
+    r.appendChild(el("div", "st " + f.st, f.st));
+    r.appendChild(el("div", "tx", "<b>" + esc(f.label) + "</b> <span>" + esc(f.detail) + "</span>"));
+    F.appendChild(r);
+  });
+}
+
+/* ============================ EXPORT ============================ */
+function fullMarkdown(){
+  const stamp = new Date().toISOString().slice(0, 16).replace("T", " ");
+  let out = `# Internal CHI 2027 review — ${S.file ? S.file.name : "submission"}\n\n_Generated ${stamp} by the CHI 2027 Review Desk. Internal aid, not a prediction of the outcome._\n\n`;
+  out += "## Pre-flight measurements\n\n";
+  S.flags.forEach(f => { out += `- **${f.st}** — ${f.label}: ${f.detail}\n`; });
+  out += "\n";
+  const order = ["verdict","map","compliance","rubric","evidence","plan","keywords"];
+  for (const id of order) if (S.sections[id]) out += S.sections[id].trim() + "\n\n---\n\n";
+  return out;
+}
+async function saveMd(){
+  const name = (S.file ? S.file.name.replace(/\.pdf$/i, "") : "chi-submission") + "-internal-review.md";
+  const text = fullMarkdown();
+  if (S.downloads){
+    try { await S.downloads.save({ filename: name, data: text }); return; } catch(e){}
+  }
+  const url = URL.createObjectURL(new Blob([text], { type: "text/markdown" }));
+  const a = document.createElement("a"); a.href = url; a.download = name; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+}
+
+/* ============================ WIRING ============================ */
+const drop = $("#drop"), fileIn = $("#file");
+drop.onclick = () => fileIn.click();
+drop.onkeydown = e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); fileIn.click(); } };
+["dragenter","dragover"].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.add("over"); }));
+["dragleave","drop"].forEach(t => drop.addEventListener(t, e => { e.preventDefault(); drop.classList.remove("over"); }));
+drop.addEventListener("drop", e => { const f = e.dataTransfer.files[0]; if (f) loadFile(f); });
+fileIn.onchange = () => { if (fileIn.files[0]) loadFile(fileIn.files[0]); };
+
+async function loadFile(f){
+  if (!/\.pdf$/i.test(f.name) && f.type !== "application/pdf"){
+    $("#setupErr").hidden = false; $("#setupErr").textContent = "That is not a PDF. CHI submissions are reviewed as PDFs — export yours and try again.";
+    return;
+  }
+  S.file = f;
+  $("#setupErr").hidden = true;
+  $("#dropTitle").textContent = f.name;
+  $("#dropSub").textContent = "reading…";
+  try {
+    await readPdf(f);
+    $("#dropSub").textContent = `${S.metrics.pages} pages · ~${S.metrics.bodyWords.toLocaleString()} words before references · ${(f.size/1048576).toFixed(1)} MB`;
+    renderPreflight();
+    $("#preflightPanel").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  } catch(e){
+    $("#setupErr").hidden = false;
+    $("#setupErr").textContent = "Could not read that PDF: " + (e.message || e);
+    S.file = null; $("#dropSub").textContent = "or click to choose a file";
+  }
+  refreshRun();
+}
+
+function refreshRun(){
+  const needKey = S.runtime === "standalone" && !$("#apiKey").value.trim();
+  const needCode = S.runtime === "server" && S.serverCfg && S.serverCfg.requiresCode
+                   && !($("#accessCode") && $("#accessCode").value.trim());
+  $("#runBtn").disabled = !S.file || needKey || needCode || S.running;
+  $("#runStatus").textContent = !S.file ? "No paper loaded."
+    : needKey ? "Enter your API key to run."
+    : needCode ? "Enter the lab access code to run."
+    : "Ready — " + S.file.name;
+}
+$("#apiKey").addEventListener("input", refreshRun);
+
+$("#depthSeg").onclick = e => {
+  const b = e.target.closest("button[data-depth]"); if (!b) return;
+  S.depth = b.dataset.depth;
+  $("#depthSeg").querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+  $("#depthHint").textContent = S.depth === "full"
+    ? "All thirteen sections: paper map, compliance audit, five-dimension rubric, claims-to-evidence matrix, method audit, reviewer objections, prioritised revision plan, and CHI 2027 keywords."
+    : S.depth === "desk"
+      ? "Compliance, completeness, anonymisation, accessibility and submission risk only — the checks that stop a paper being reviewed at all. Fastest."
+      : "The verdict, the paper map, the compliance audit, the sharpest objections and the keywords — the five things worth knowing about an early draft.";
+};
+
+$("#runBtn").onclick = run;
+$("#stopBtn").onclick = () => { if (S.abort) S.abort.abort(); };
+$("#resetBtn").onclick = () => location.reload();
+$("#copyBtn").onclick = async () => {
+  try { await navigator.clipboard.writeText(fullMarkdown()); $("#copyBtn").textContent = "Copied"; setTimeout(() => $("#copyBtn").textContent = "Copy Markdown", 1600); }
+  catch(e){ $("#copyBtn").textContent = "Copy failed"; setTimeout(() => $("#copyBtn").textContent = "Copy Markdown", 1600); }
+};
+$("#dlBtn").onclick = saveMd;
+
+/* landing nav preview so the page shows what it does at rest */
+(function seedNav(){
+  const N = $("#nav");
+  activePlan().forEach(p => {
+    const b = el("button", "navitem"); b.type = "button"; b.dataset.state = "idle"; b.disabled = true;
+    b.appendChild(el("span", "num", esc(p.num)));
+    b.appendChild(el("span", null, esc(p.title)));
+    N.appendChild(b);
+  });
+})();
+
+/* ==== AHL sign-in gate (shared Apps Script member-login broker) ====
+   No GCP OAuth client. A full-page redirect to the shared AHL broker
+   (ahl-site-appscript) reads the visitor's Workspace identity server-side, then
+   bounces back to /auth-callback/ with the identity + an HMAC session token in the
+   URL fragment. Only @ahlab.org members get past the broker. The session lives in
+   localStorage (7-day TTL); /auth-callback/ writes it.
+
+   Here the gate does double duty: it reveals the UI, AND its HMAC token is sent to
+   the Worker on every review (x-ahl-token) so the shared key can't be spent without
+   a real login. Backend setup (one-time): add https://chi-review.ahlab.org/auth-callback/
+   to ALLOWED_RETURN_URLS in ahl-site-appscript/Code.js and redeploy the broker. */
+const AHL_BROKER_URL  = 'https://script.google.com/a/macros/ahlab.org/s/AKfycbwHPIr3JR0ZQ9471E1W0KqM-BggXLv8g8wvx0Z3Qwjx2HajD71gBf60CxrJBcrN_51T/exec';
+const AHL_DOMAIN      = 'ahlab.org';
+const AHL_SESSION_KEY = 'ahl-auth-v1';        // identity cache (localStorage) — must match auth-callback
+const AHL_NONCE_KEY   = 'ahl-auth-nonce-v1';  // in-flight round-trip state (localStorage)
+const AHL_RETURN_KEY  = 'ahl-auth-return-v1';
+const AHL_SESSION_TTL_MS = 7 * 24 * 60 * 60 * 1000;  // 7 days — matches broker token TTL
+
+function ahlGetSession(){
+  try {
+    const s = JSON.parse(localStorage.getItem(AHL_SESSION_KEY) || 'null');
+    const fresh = s && typeof s.ts === 'number' && (Date.now() - s.ts) < AHL_SESSION_TTL_MS;
+    if (s && fresh && typeof s.email === 'string' && s.email.toLowerCase().endsWith('@' + AHL_DOMAIN)) return s;
+    if (s) localStorage.removeItem(AHL_SESSION_KEY);
+  } catch(e){}
+  return null;
+}
+function ahlToken(){ const s = ahlGetSession(); return (s && s.token) ? s.token : ''; }
+
+function ahlNonce(){
+  try { const b = new Uint8Array(16); crypto.getRandomValues(b);
+    return Array.prototype.map.call(b, x => ('0' + x.toString(16)).slice(-2)).join(''); }
+  catch(e){ return Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2); }
+}
+function ahlLogin(){
+  const nonce = ahlNonce();
+  try { localStorage.setItem(AHL_NONCE_KEY, nonce); localStorage.setItem(AHL_RETURN_KEY, '/'); }
+  catch(e){ alert('Your browser blocked site storage. Sign-in needs localStorage — please try a regular (non-private) window.'); return; }
+  const callback = location.origin + '/auth-callback/';
+  const url = AHL_BROKER_URL + (AHL_BROKER_URL.indexOf('?') === -1 ? '?' : '&') +
+    'return=' + encodeURIComponent(callback) + '&nonce=' + encodeURIComponent(nonce);
+  location.assign(url);
+}
+function ahlSignOut(){ try { localStorage.removeItem(AHL_SESSION_KEY); } catch(e){} location.reload(); }
+
+let APP_STARTED = false;
+function startApp(){ if (APP_STARTED) return; APP_STARTED = true; detectRuntime(); }
+
+function ahlGrant(){
+  const s = ahlGetSession();
+  document.body.classList.add('ahl-authed');
+  const who = document.getElementById('ahlWho');
+  if (who && s){
+    who.hidden = false;
+    who.textContent = s.email;
+    who.title = 'Signed in as ' + s.email + ' — click to sign out';
+    who.style.cursor = 'pointer';
+    who.addEventListener('click', ahlSignOut);
+  }
+  startApp();
+}
+
+// A live session reveals the app immediately; otherwise wait for the sign-in click.
+if (ahlGetSession()) ahlGrant();
+else document.getElementById('gateBtn')?.addEventListener('click', ahlLogin);
+</script>
+
+</body>
+</html>
