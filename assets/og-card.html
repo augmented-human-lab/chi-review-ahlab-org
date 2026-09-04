@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Source for assets/og-image.png (1200×630). Render with:
+     chrome --headless=new --window-size=1200,630 --screenshot=assets/og-image.png file://…/assets/og-card.html -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1200px;height:630px;overflow:hidden}
+  .card{
+    width:1200px;height:630px;position:relative;
+    background:
+      radial-gradient(130% 130% at 100% 0%, rgba(0,215,238,.28), transparent 52%),
+      linear-gradient(135deg,#6100FF 0%,#4400B3 100%);
+    color:#fff;font-family:"IBM Plex Sans",system-ui,sans-serif;
+    padding:62px 80px;display:flex;flex-direction:column;justify-content:space-between;
+  }
+  .top{display:flex;align-items:center;gap:20px}
+  .logo{
+    width:84px;height:84px;border-radius:22px;flex:0 0 auto;
+    background:linear-gradient(221deg,#00D7EE 0%,#8A4DFF 100%);
+    display:flex;align-items:center;justify-content:center;
+    font-family:"Newsreader",Georgia,serif;font-weight:600;font-size:52px;color:#fff;
+    box-shadow:0 12px 34px rgba(0,0,0,.28);
+  }
+  .brand{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:21px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.82)}
+  .mid h1{font-family:"Newsreader",Georgia,serif;font-weight:600;font-size:70px;line-height:1.04;letter-spacing:-.02em;margin-bottom:20px}
+  .mid p{font-size:28px;line-height:1.4;color:rgba(255,255,255,.9);max-width:1000px;font-weight:400}
+  .pills{display:flex;gap:13px;margin-top:30px;flex-wrap:wrap}
+  .pill{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);border-radius:999px;
+    padding:10px 20px;font-size:21px;font-weight:500;color:#fff}
+  .foot{display:flex;align-items:center;justify-content:space-between;font-size:23px;color:rgba(255,255,255,.85)}
+  .foot .url{font-family:"IBM Plex Mono",monospace;font-weight:500}
+  .foot .lab{font-weight:600}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="top">
+      <div class="logo">C</div>
+      <div class="brand">CHI&nbsp;2027 Review Desk</div>
+    </div>
+    <div class="mid">
+      <h1>Pre-submission review,<br>before the reviewers do.</h1>
+      <p>Drop in a CHI 2027 submission PDF and get a full internal review — a desk-reject audit, the ACM five-dimension rubric, and a prioritised revision plan.</p>
+      <div class="pills">
+        <span class="pill">Desk-reject audit</span>
+        <span class="pill">ACM rubric</span>
+        <span class="pill">Revision plan</span>
+        <span class="pill">Reviewer keywords</span>
+      </div>
+    </div>
+    <div class="foot">
+      <span class="url">chi-review.ahlab.org</span>
+      <span class="lab">Augmented Human Lab</span>
+    </div>
+  </div>
+</body>
+</html>
