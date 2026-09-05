@@ -1,7 +1,17 @@
 # Contributing — CHI Review Desk frontend
 
 This is the site served at **https://chi-review.ahlab.org** (a single static `index.html`,
-gated to `@ahlab.org` members). The backend is a separate repo, `chi-review-ahlab-worker`.
+gated to `@ahlab.org` members).
+
+**The project is two repos — clone both, side by side:**
+
+```bash
+mkdir chi-review && cd chi-review
+git clone https://github.com/augmented-human-lab/chi-review-ahlab-org.git      # this repo
+git clone https://github.com/augmented-human-lab/chi-review-ahlab-worker.git   # backend
+```
+
+They must be siblings (the prompts-sync commands use `../`).
 
 ## How to make a change and ship it
 

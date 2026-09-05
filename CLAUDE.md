@@ -12,6 +12,26 @@ separate repo: `chi-review-ahlab-worker` (Cloudflare Worker; holds the shared ke
 The page auto-detects its mode: **server** (talks to `window.API_BASE`, the shared-key
 Worker — this is production), **standalone** (personal key), or **artifact** (`window.claude`).
 
+## The other half — the backend repo (clone it alongside)
+
+This frontend is one of **two** repos. The backend is:
+
+> **https://github.com/augmented-human-lab/chi-review-ahlab-worker** — the Cloudflare Worker
+> that holds the shared key, verifies the login, and runs the review. It has its own
+> `CLAUDE.md` — read it when touching the API, auth/HMAC, prompts, or deploy/CI.
+
+Clone both in the **same parent folder** so they sit as siblings — the prompts-sync command
+uses `../chi-review-ahlab-worker/…`:
+
+```
+chi-review/
+  chi-review-ahlab-org/      # this repo (git clone …/chi-review-ahlab-org.git)
+  chi-review-ahlab-worker/   # backend   (git clone …/chi-review-ahlab-worker.git)
+```
+
+Production reviews run on the backend, so a change to the review prompts touches **both**
+repos (see "Prompts" below).
+
 ## How to deploy (do it this way)
 
 **Deployment = push to `main`.** GitHub Pages rebuilds automatically (~1–2 min). There is no
